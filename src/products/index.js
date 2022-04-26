@@ -24,6 +24,34 @@ productsRouter
       res.status(400).send();
     }
   })
+  .put("/:id", async (req, res) => {
+    try {
+      const product = await ProductsModel.findByIdAndUpdate(
+        req.params.id,
+        req.body,
+        { new: true }
+      );
+      if (!product) return res.status(404);
+      res.status(204).send(product);
+    } catch (error) {
+      console.log(error);
+      res.status(500);
+    }
+  })
+  //   .put("/:id", async (req, res, next) => {
+  //     try {
+  //       const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+  //         new: true,
+  //       });
+
+  //       if (!product) {
+  //         return res.status(404).send();
+  //       }
+  //       res.status(204).send(product);
+  //     } catch (error) {
+  //       res.status(400).send();
+  //     }
+  //   })
   .delete("/:id", async (req, res, next) => {
     try {
       const product = await Product.findByIdAndDelete(req.params.id);

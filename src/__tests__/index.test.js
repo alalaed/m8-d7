@@ -40,6 +40,11 @@ describe("Testing the environment", () => {
     price: 100,
   };
 
+  const updatedValidProduct = {
+    name: "Test Product 2",
+    price: 9999,
+  };
+
   let productId;
 
   // "it" and "test" are the same function i.e. "it" is just an alias
@@ -78,9 +83,32 @@ describe("Testing the environment", () => {
     expect(response.body._id).toBe(undefined);
   });
 
-  it("should test that when deleting a product with a non existing ID we are receiving a 404", async () => {
+  it("should test that when deleting a product with an existing ID we are receiving a 204", async () => {
     const response = await client.delete("/products/" + productId);
 
+    expect(response.status).toBe(204);
+  });
+
+  it("should test that when deleting a product with a non existing ID we are receiving a 404", async () => {
+    const response = await client.delete(
+      "/products/" + "999999999999999999999999"
+    );
+
+    expect(response.status).toBe(404);
+  });
+
+  it("should test that when deleting a product with a non existing ID we are receiving a 404", async () => {
+    const response = await client.delete(
+      "/products/" + "999999999999999999999999"
+    );
+
+    expect(response.status).toBe(404);
+  });
+
+  it("should test that when modifying a product with valid data we receive 204", async () => {
+    const response = await client
+      .put("/products/" + productId)
+      .send(updatedValidProduct);
     expect(response.status).toBe(204);
   });
 
