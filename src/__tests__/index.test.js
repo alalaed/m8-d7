@@ -78,6 +78,12 @@ describe("Testing the environment", () => {
     expect(response.body._id).toBe(undefined);
   });
 
+  it("should test that when deleting a product with a non existing ID we are receiving a 404", async () => {
+    const response = await client.delete("/products/" + productId);
+
+    expect(response.status).toBe(204);
+  });
+
   afterAll(async () => {
     console.log("afterAll");
     await mongoose.connection.dropDatabase();
