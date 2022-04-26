@@ -71,6 +71,13 @@ describe("Testing the environment", () => {
     expect(response.body.name).toBe(validProduct.name);
   });
 
+  it("should test that when retrieve a product with a non existing ID we are receiving a 404", async () => {
+    const response = await client.get("/products/" + "999999999999");
+
+    expect(response.status).toBe(404);
+    expect(response.body._id).toBe(undefined);
+  });
+
   afterAll(async () => {
     console.log("afterAll");
     await mongoose.connection.dropDatabase();
